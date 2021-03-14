@@ -9,9 +9,9 @@ import uio
 import ure as re
 import uerrno
 import uasyncio as asyncio
-import pkg_resources
+#from pkg_resources import resource_stream
 
-from .utils import parse_qs
+from .utils import parse_qs, resource_stream
 
 SEND_BUFSZ = 128
 
@@ -273,7 +273,7 @@ class WebApp:
         if not content_type:
             content_type = get_mime_type(fname)
         try:
-            with pkg_resources.resource_stream(self.pkg, fname) as f:
+            with resource_stream(self.pkg, fname) as f:
                 yield from start_response(writer, content_type, "200", headers)
                 yield from sendstream(writer, f)
         except OSError as e:
@@ -305,10 +305,10 @@ class WebApp:
 
     def run(self, host="127.0.0.1", port=8081, debug=False, lazy_init=False, log=None):
         if log is None and debug >= 0:
-            import ulogging
-            log = ulogging.getLogger("picoweb")
+            import logging
+            log = logging.getLogger("picoweb")
             if debug > 0:
-                log.setLevel(ulogging.DEBUG)
+                log.setLevel(logging.DEBUG)
         self.log = log
         gc.collect()
         self.debug = int(debug)

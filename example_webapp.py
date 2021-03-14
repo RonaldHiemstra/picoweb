@@ -40,7 +40,7 @@ ROUTES = [
 ]
 
 
-import ulogging as logging
+import logging
 logging.basicConfig(level=logging.INFO)
 #logging.basicConfig(level=logging.DEBUG)
 
@@ -50,4 +50,4 @@ app = picoweb.WebApp(__name__, ROUTES)
 # 0 (False) normal logging: requests and errors
 # 1 (True) debug logging
 # 2 extra debug logging
-app.run(debug=1)
+app.run(debug=1, host='0.0.0.0', port=80)
